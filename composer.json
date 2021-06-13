@@ -1,0 +1,17 @@
+{
+    "name": "nirbose/feeling-gif-api",
+    "authors": [
+        {
+            "name": "Nirbose",
+            "email": "nirbose2@gmail.com"
+        }
+    ],
+    "require": {
+        "bramus/router": "~1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Api\\": "Api/"
+        }
+    }
+}
