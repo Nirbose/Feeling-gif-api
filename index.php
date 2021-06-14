@@ -1,39 +1,50 @@
 <?php
+// Pas encore en POO Rip...
 
-require __DIR__ . '/vendor/autoload.php';
+$json = [];
 
-$router = new \Bramus\Router\Router();
+if(isset($_GET['feeling']) && !empty($_GET['feeling']) && isset($_GET['id']) && !empty($_GET['id'])) {
+	$feeling = htmlspecialchars($_GET['feeling']);
+	if(is_numeric($_GET['id'])) {
+		
+		$file = file_exists("./".$feeling."/".$_GET['id'].".gif");
+		$json['success'] = 200;
+		$json['exist'] = $file;
+		$json['link'] = "https://enzia.toile-libre.org/cdn/feeling/".$feeling."/".$_GET['id'].".gif";
+		
+		if($json['exist'] == false) {
+			$random = rand(1, 50);
+			header("Location: https://enzia.toile-libre.org/cdn/feeling/script.php?feeling=$feeling&id=$random");
+		}
+		
+	} else {
+		if(isset($_GET['force_success']) && $_GET['force_success'] == true) {
+			$random = rand(1, 50);
+			header("Location: https://enzia.toile-libre.org/cdn/feeling/script.php?feeling=$feeling&id=$random");
+		} else {
+			$json['success'] = 403;
+			$json['error'] = "Id is not a number";
+		}
+	}
+	
+} elseif(isset($_GET['feeling']) && !empty($_GET['feeling']) && isset($_GET['random']) && $_GET['random'] == true) {
+	$feeling = htmlspecialchars($_GET['feeling']);
+	$random = rand(1, 50);
+	$file = file_exists("./".$feeling."/".$random.".gif");
+	$json['success'] = 200;
+	$json['exist'] = $file;
+	$json['link'] = "https://enzia.toile-libre.org/cdn/feeling/".$feeling."/".$random.".gif";
+		
+	if($json['exist'] == false) {
+		$random = rand(1, 50);
+		header("Location: https://enzia.toile-libre.org/cdn/feeling/script.php?feeling=$feeling&id=$random");
+	}
+		
+	
+} else {
+	$json['success'] = 403;
+	$json['error'] = "POST requests are expected";
+}
 
-$router->get('/', function() {
-    var_dump(file_get_contents("https://enzia.toile-libre.org/cdn/feeling/script.php"));
-});
-
-$router->get('/random', "Api\Api@random");
-
-$router->get('/hug', "Api\Api@hug");
-$router->get('/hug/(\d+)', "Api\Api@hug");
-
-$router->get('/kiss', "Api\Api@kiss");
-$router->get('/kiss/(\d+)', "Api\Api@kiss");
-
-$router->get('/pat', "Api\Api@pat");
-$router->get('/pat/(\d+)', "Api\Api@pat");
-
-$router->get('/cry', "Api\Api@cry");
-$router->get('/cry/(\d+)', "Api\Api@cry");
-
-$router->get('/eat', "Api\Api@eat");
-$router->get('/eat/(\d+)', "Api\Api@eat");
-
-
-$router->set404(function() {
-    header('HTTP/1.1 404 Not Found');
-    header('Content-Type: application/json');
-
-    $json['success'] = 404;
-    $json['err'] = "The file was not found";
-
-    echo json_encode($json);
-});
-
-$router->run();
+header('Content-Type: application/json');
+echo json_encode($json);
