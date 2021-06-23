@@ -40,5 +40,14 @@ Vous pouver aussi chercher un ID en particulier avec :
 Si l'id n'existe pas il vous repondra `exist = false`, si vous voulez absolument avoir un retour en true vous pouver forcée :
 `https://enzia.toile-libre.org/cdn/feeling/?feeling=hug&id=12&force_success=true`
 
+## Feeling disponible :
+- hug
+- kiss
+- pat
+- eat
+- punch
+- cry
+- blush
+
 ## Fait par Nirbose
 *PS: se que vous trverer dans le dossier /App n'est pas encore mis en place donc suivez bien se qui est dis au dessus.*
