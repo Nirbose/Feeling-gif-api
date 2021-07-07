@@ -4,15 +4,11 @@ namespace Api;
 
 class Api {
 
-    protected $path;
+    protected $path = "https://enzia.toile-libre.org/cdn/feeling/";
     public $rmin = 1;
     public $rmax = 50;
-
-    public function __construct()
-    {
-        $this->path = "https://enzia.toile-libre.org/cdn/feeling/";
-    }
-
+    protected $random;
+    
     public function id(int $id = null) {
         if(is_null($id)) {
             return rand($this->rmin, $this->rmax);
